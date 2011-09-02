@@ -3,15 +3,48 @@
 require 'rubygems'
 require 'xmpp4r-simple'
 require 'yaml'
+require 'getoptlong'
 
 config = YAML.load_file("#{File.dirname((File.symlink?(__FILE__) ? File.readlink(__FILE__) : __FILE__))}/config.yml")
 
-im = Jabber::Simple.new(config["user"], config["password"])
-puts im.connected?
-recv = "fabian354@googlemail.com"
-text = "Dies ist ein Test " + Time.now.to_s
-queue = im.deliver(recv, text)
+opt = GetoptLong.new(
+    ["--interactive", "-i", GetoptLong::NO_ARGUMENT],
+    ["--help", "-h", GetoptLong::NO_ARGUMENT]
+)
 
-while queue.length>0 do
-    sleep(0.5)
+settings = {}
+settings[:interactive] = false
+
+opt.each do |opt, arg|
+    case opt
+        when '--help'
+            puts "Hilfe gibt's noch nicht!"
+            exit 0
+        when '--interactive'
+            settings[:interactive] = true
+    end
 end
+
+if ARGV.length==0
+    puts "Missing recipients."
+    exit 0
+end
+recipients = ARGV
+
+im = Jabber::Simple.new(config["user"], config["password"])
+
+if settings[:interactive]
+    while text = STDIN.gets
+        ARGV.each do |recipient|
+            im.deliver(recipient, text, :normal)
+        end
+    end
+else
+    text = STDIN.read
+    ARGV.each do |recipient|
+        im.deliver(recipient, text, :normal)
+    end
+end
+sleep 1
+im.disconnect
+
