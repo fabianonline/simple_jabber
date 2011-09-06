@@ -33,18 +33,13 @@ recipients = ARGV
 
 im = Jabber::Simple.new(config["user"], config["password"])
 
-if settings[:interactive]
-    while text = STDIN.gets
-        ARGV.each do |recipient|
-            im.deliver(recipient, text, :normal)
-        end
-    end
-else
-    text = STDIN.read
+text = STDIN.gets
+begin
     ARGV.each do |recipient|
         im.deliver(recipient, text, :normal)
     end
-end
+end while settings[:interactive] and text = STDIN.gets.strip
+
 sleep 1
 im.disconnect
 
