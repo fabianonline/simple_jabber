@@ -13,7 +13,7 @@ Installation
 ------------
 
 * Clone this repository.
-* Install the needed gems (`gem install getoptlong xmpp4r-simple`).
+* Install the needed gems (`gem install xmpp4r-simple`).
 * Copy `config.yml.example` to `config.yml`.
 * Modify `config.yml` to add login credentials to an existing
   Jabber account which will be used for sending messages.
