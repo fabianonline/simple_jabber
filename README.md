@@ -1,16 +1,17 @@
 Simple Jabber
 =============
 
-Usage
------
+simple_jabber.rb
+----------------
+
+### Possibilities
 
 You can use simple_jabber.rb whenever you want to send jabber messages
 from the console. For example, you could use this script to send Nagios
 notifications to your Jabber account or notify yourself in realtime about
 other important things on your server.
 
-Installation
-------------
+### Installation
 
 * Clone this repository.
 * Install the needed gems (`gem install xmpp4r-simple`).
@@ -18,8 +19,7 @@ Installation
 * Modify `config.yml` to add login credentials to an existing
   Jabber account which will be used for sending messages.
 
-Usage
------
+### Usage
 
 You can just pipe data via STDIN into the script.
 
@@ -42,3 +42,18 @@ You are not even limited to a single recipient.
 
     echo "Hello all of you" | ./simple_jabber.rb a@example.com b@example.com c@example.com
 
+
+SimpleJabber.rb
+---------------
+
+SimpleJabber is a single Ruby class which has exacly one purpose: Sending Jabber messages.
+
+### Installation
+
+See above. Same procedure (if you've done it once, that's enough).
+
+### Usage
+
+    require 'SimpleJabber'
+    jabber = SimpleJabber.new
+    jabber.deliver('recipient@example.com', 'Hello world')
